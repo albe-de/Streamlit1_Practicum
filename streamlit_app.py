@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import csv
 
 st.title("Mohji's Shop")
@@ -6,9 +7,10 @@ st.write(
     "Curtis came up with the name"
 )
 
-# use relative paths-->
-def dumpCSV(file='Streamlit1_Practicum/dev assets/Sanford+Stuff+Catalogue+-+Sheet1.csv'):
-    with open(file, newline='') as csvfile:
+# use github links to access data-->
+csvLocation = 'https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'
+def dumpCSV(file=csvLocation):
+    with open(pd.read_csv(file, index_col=0), newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         names, descriptions, quantities = [],[],[]
         
