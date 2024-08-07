@@ -1,5 +1,7 @@
+from io import StringIO
 import streamlit as st
 import pandas as pd
+import requests
 import csv
 
 st.title("Mohji's Shop")
@@ -8,24 +10,36 @@ st.write(
 )
 
 # use github links to access data-->
-csvLocation = 'https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'
 def dumpCSV(file=csvLocation):
-    with open(pd.read_csv(file, index_col=0), newline='') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        names, descriptions, quantities = [],[],[]
+    response = requests.get(file)
+    response.raise_for_status()  # Ensure we notice bad responses
+    csv_content = response.text
+
+    # Use StringIO to make the string data behave like a file object
+    csvfile = StringIO(csv_content)
+    
+    # Read the CSV data
+    reader = csv.reader(csvfile, delimiter=',', quotechar='"')
+    
+    names, descriptions, quantities = [], [], []
+
+    for row in reader:
+        if not row:  # Skip empty rows
+            continue
+        # Assuming the CSV structure: Name, Description, Quantity
+        names.append(row[0])
+        quantities.append(row[-1])
         
-        for row in spamreader:
-            info = ' '.join(row).split(',')
-            quantities.insert(-1, info[-1])
-            names.insert(-1, info[0])
+        # Join everything in between as description
+        description = ','.join(row[1:-1])
+        descriptions.append(description)
+    
+    return names, descriptions, quantities
 
-            des = ''
-            for i in range(1, len(info) - 1): des += info[i]
-            descriptions.insert(-1, des)
-
-        return names, descriptions, quantities
-    return
-
-
+# Retrieve and process the data
 names, descriptions, quantities = dumpCSV()
-print(names[3])
+
+# Print results for verification
+print("Names:", names)
+print("Descriptions:", descriptions)
+print("Quantities:", quantities)
