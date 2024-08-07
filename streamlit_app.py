@@ -6,7 +6,8 @@ st.write(
     "Curtis came up with the name"
 )
 
-def dumpCSV(file='/home/albede/Desktop/Practicum Projects/Streamlit1_Practicum/dev assets/Sanford+Stuff+Catalogue+-+Sheet1.csv'):
+# use relative paths-->
+def dumpCSV(file='Streamlit1_Practicum/dev assets/Sanford+Stuff+Catalogue+-+Sheet1.csv'):
     with open(file, newline='') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         names, descriptions, quantities = [],[],[]
