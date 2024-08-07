@@ -10,6 +10,7 @@ st.write(
 )
 
 # use github links to access data-->
+csvLocation = 'https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'
 def dumpCSV(file=csvLocation):
     response = requests.get(file)
     response.raise_for_status()  # Ensure we notice bad responses
