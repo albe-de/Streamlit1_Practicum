@@ -1,4 +1,4 @@
-from streamlit_gsheets import GSheetsConnection
+# from streamlit_gsheets import GSheetsConnection
 from io import StringIO
 import streamlit as st
 import pandas as pd
