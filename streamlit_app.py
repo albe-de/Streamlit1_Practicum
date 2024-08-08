@@ -1,3 +1,5 @@
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
 # from streamlit_gsheets import GSheetsConnection
 from io import StringIO
 import streamlit as st
@@ -27,14 +29,33 @@ class exessMeathods():
         
         return names, descriptions, quantities
 
+class DataStore:
+    def __init__(self):
+        self.app = Flask(__name__)
+        self.app.config['SECRET_KEY'] = 'secret!'
+        self.socketio = SocketIO(self.app)
+
+        self.data = {"1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": []}
+
+        @self.app.route('/')
+        def index():
+            return render_template('index.html')
+
+        @self.socketio.on('get_data')
+        def handle_get_data():
+            emit('data_response', self.data)
+
+        @self.socketio.on('update_data')
+        def handle_update_data(new_data):
+            self.data.update(new_data)
+            emit('data_response', self.data, broadcast=True)
+
+if __name__ == '__main__':
+    store = DataStore()
+    store.socketio.run(store.app, debug=True)
+
+
 st.title("Mohji's Shop")
 st.write(
     "Curtis came up with the name"
 )
-
-# Create a connection object.
-conn = st.connection("gsheets", type=GSheetsConnection)
-df = conn.read()
-
-for row in df.itertuples():
-    st.write(f"{row.team1} has a :{row.team2}:")
