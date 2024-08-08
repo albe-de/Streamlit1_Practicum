@@ -50,10 +50,11 @@ class DataStore:
             self.data.update(new_data)
             emit('data_response', self.data, broadcast=True)
 
+"""
 if __name__ == '__main__':
     store = DataStore()
     store.socketio.run(store.app, debug=True)
-
+"""
 
 st.title("Mohji's Shop")
 st.write(
