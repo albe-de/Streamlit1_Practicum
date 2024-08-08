@@ -7,11 +7,8 @@ import csv
 
 # third party meathods for exess site usage
 class exessMeathods():
-    def __init__(self): 
-        # use github links to access data-->
-        self.csvLocation = 'https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'
-
-    def dumpCSV(file=self.csvLocation):
+    def __init__(self): pass
+    def dumpCSV(self, file='https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'):
         response = requests.get(file)
         response.raise_for_status() 
         csv_content = response.text
