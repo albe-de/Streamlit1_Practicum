@@ -63,7 +63,7 @@ data = dataStore()
 
 st.title("Mohji's Shop")
 st.write(
-    data.getData('team1')
+    data.getData()
 )
 
 # round 1:
