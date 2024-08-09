@@ -41,7 +41,7 @@ class dataStore:
 
     def addData(self, columnName, val):
         df = self.getData()
-        if df!=None and columnName in df.columns:
+        if columnName in df.columns:
             new_row = {col: '' for col in df.columns}
             new_row[columnName] = val
             response = requests.post(self.apiEndpoint, json={'data': new_row})
@@ -51,7 +51,7 @@ class dataStore:
 
     def removeData(self, columnName, val):
         df = self.getData()
-        if df!=None and columnName in df.columns:
+        if columnName in df.columns:
             df = df[df[columnName] != val]
             updated_data = df.to_dict(orient='records')
             response = requests.put(self.apiEndpoint, json={'data': updated_data})
