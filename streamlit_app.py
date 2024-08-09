@@ -42,22 +42,12 @@ class dataStore:
     def addData(self, columnName, val):
         df = self.getData()
         if columnName in df.columns:
-            # Append the new value to the DataFrame
-            newRow = {col: '' for col in df.columns}
-            newRow[columnName] = val
-            
-            # Append the new row to the DataFrame
-            df = df.append(newRow, ignore_index=True)
-            
-            # Convert the DataFrame to a list of dictionaries
-            updatedData = df.to_dict(orient='records')
-            
-            # Update the sheet with the new DataFrame
-            response = requests.put(self.apiEndpoint, json={'data': updatedData})
+            new_row = {col: '' for col in df.columns}
+            new_row[columnName] = val
+            response = requests.post(self.apiEndpoint, json={'data': new_row})
             return response.json()
         
-        else:
-            return f"Column '{columnName}' does not exist."
+        else: return f"Column '{columnName}' does not exist."
 
 data = dataStore()
 data.addData('team1', 'one')
