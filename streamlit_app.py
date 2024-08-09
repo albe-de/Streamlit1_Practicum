@@ -50,7 +50,7 @@ class dataStore:
 
 
 ds = dataStore()
-data = ds.getData()
+data = ds.getData(False)
 
 st.title("Mohji's Shop")
 
