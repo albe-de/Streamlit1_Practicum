@@ -2,6 +2,7 @@ from io import StringIO
 import streamlit as st
 import pandas as pd
 import requests
+import time
 import csv
 
 # third party meathods for exess site usage
@@ -28,46 +29,54 @@ class exessMeathods():
 
 class dataStore:
     def __init__(self):
-        self.api_endpoint = 'https://sheetdb.io/api/v1/tg7nxf1004y8w'
-        self.google_sheet = 'https://docs.google.com/spreadsheets/d/1MtMZush8dUvOZ6LxDmX_e8nZ7zY025Chnsn2OkX43MU/edit#gid=0'
+        self.apiEndpoint = 'https://sheetdb.io/api/v1/tg7nxf1004y8w'
+        self.googleSheet = 'https://docs.google.com/spreadsheets/d/1MtMZush8dUvOZ6LxDmX_e8nZ7zY025Chnsn2OkX43MU/edit#gid=0'
 
-    def get_data(self, column_name):
-        """Get data for the specified column."""
-        response = requests.get(self.api_endpoint)
+    def getData(self):
+        response = requests.get(self.apiEndpoint)
         data = response.json()
         df = pd.DataFrame(data)
-        
-        return df
 
-    def add_data(self, column_name, new_value):
-        """Add data to the end of the specified column."""
-        response = requests.get(self.api_endpoint)
-        data = response.json()
-        df = pd.DataFrame(data)
-        if column_name in df.columns:
+        if df: return df; return None
+
+    def addData(self, columnName, val):
+        df = getData()
+        if columnName in df.columns:
             new_row = {col: '' for col in df.columns}
-            new_row[column_name] = new_value
-            response = requests.post(self.api_endpoint, json={'data': new_row})
+            new_row[columnName] = val
+            response = requests.post(self.apiEndpoint, json={'data': new_row})
             return response.json()
-        else:
-            return f"Column '{column_name}' does not exist."
+        
+        else: return f"Column '{columnName}' does not exist."
 
-    def remove_data(self, column_name, value_to_remove):
-        """Remove data from the specified column and shift remaining data up."""
-        response = requests.get(self.api_endpoint)
-        data = response.json()
-        df = pd.DataFrame(data)
-        if column_name in df.columns:
-            df = df[df[column_name] != value_to_remove]
+    def removeData(self, columnName, val):
+        df = getData()
+        if columnName in df.columns:
+            df = df[df[columnName] != val]
             updated_data = df.to_dict(orient='records')
-            response = requests.put(self.api_endpoint, json={'data': updated_data})
+            response = requests.put(self.apiEndpoint, json={'data': updated_data})
             return response.json()
-        else:
-            return f"Column '{column_name}' does not exist."
+        
+        else: return f"Column '{columnName}' does not exist."
 
 data = dataStore()
 
 st.title("Mohji's Shop")
 st.write(
-    data.get_data('team1')
+    data.getData.columns
+)
+
+# round 1:
+data.addData('team1', '1')
+data.addData('team1', '2')
+data.addData('team1', '3')
+
+time.sleep(10)
+# round 2:
+data.removeData('team1', '2')
+
+time.sleep(2)
+# round 3:
+st.write(
+    data.getData.columns
 )
