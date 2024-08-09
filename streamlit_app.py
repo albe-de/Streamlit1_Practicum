@@ -36,45 +36,32 @@ class dataStore:
         response = requests.get(self.apiEndpoint)
         data = response.json()
         df = pd.DataFrame(data)
+
         return df
 
     def addData(self, columnName, val):
         df = self.getData()
-
         if columnName in df.columns:
+            # Append the new value to the DataFrame
             newRow = {col: '' for col in df.columns}
             newRow[columnName] = val
+            
+            # Append the new row to the DataFrame
             df = df.append(newRow, ignore_index=True)
-            # updatedData = df.to_dict(orient='records')
+            
+            # Convert the DataFrame to a list of dictionaries
+            updatedData = df.to_dict(orient='records')
+            
+            # Update the sheet with the new DataFrame
             response = requests.put(self.apiEndpoint, json={'data': updatedData})
-
             return response.json()
-        else: return f"Column '{columnName}' does not exist."
-
-    def removeData(self, columnName, val):
-        df = self.getData()
-
-        if columnName in df.columns:
-            index = df[df[columnName] == val].index
-
-            if not index.empty:
-                df.loc[index[0], columnName] = None
-                df[columnName] = df[columnName].shift(-1)
-                df = df.dropna().reset_index(drop=True)
-                updatedData = df.to_dict(orient='records')
-                response = requests.put(self.apiEndpoint, json={'data': updatedData})
-                
-                return response.json()
-
-            else: return f"Value '{val}' not found in column '{columnName}'."
-        else: return f"Column '{columnName}' does not exist."
+        
+        else:
+            return f"Column '{columnName}' does not exist."
 
 data = dataStore()
-
 data.addData('team1', 'one')
 data.addData('team1', 'two')
-data.addData('team1', 'three')
-data.removeData('team1', 'two')
 
 st.title("Mohji's Shop")
 st.write(
