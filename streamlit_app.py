@@ -56,7 +56,7 @@ class dataStore:
 
 
 ds = dataStore()
-data = ds.getData
+data = ds.getData()
 
 st.title("Mohji's Shop")
 if st.button('Click Me'):
