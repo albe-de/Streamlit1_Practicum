@@ -1,5 +1,3 @@
-from flask import Flask, render_template
-from flask_socketio import SocketIO, emit
 # from streamlit_gsheets import GSheetsConnection
 from io import StringIO
 import streamlit as st
@@ -29,34 +27,50 @@ class exessMeathods():
         
         return names, descriptions, quantities
 
-class DataStore:
+class dataStore:
     def __init__(self):
-        self.app = Flask(__name__)
-        self.app.config['SECRET_KEY'] = 'secret!'
-        self.socketio = SocketIO(self.app)
+        self.api_endpoint = 'https://sheetdb.io/api/v1/tg7nxf1004y8w'
+        self.google_sheet = 'https://docs.google.com/spreadsheets/d/1MtMZush8dUvOZ6LxDmX_e8nZ7zY025Chnsn2OkX43MU/edit#gid=0'
 
-        self.data = {"1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": []}
+    def get_data(self, column_name):
+        """Get data for the specified column."""
+        response = requests.get(self.api_endpoint)
+        data = response.json()
+        df = pd.DataFrame(data)
+        if column_name in df.columns:
+            return df[column_name].tolist()
+        else:
+            return f"Column '{column_name}' does not exist."
 
-        @self.app.route('/')
-        def index():
-            return render_template('index.html')
+    def add_data(self, column_name, new_value):
+        """Add data to the end of the specified column."""
+        response = requests.get(self.api_endpoint)
+        data = response.json()
+        df = pd.DataFrame(data)
+        if column_name in df.columns:
+            new_row = {col: '' for col in df.columns}
+            new_row[column_name] = new_value
+            response = requests.post(self.api_endpoint, json={'data': new_row})
+            return response.json()
+        else:
+            return f"Column '{column_name}' does not exist."
 
-        @self.socketio.on('get_data')
-        def handle_get_data():
-            emit('data_response', self.data)
+    def remove_data(self, column_name, value_to_remove):
+        """Remove data from the specified column and shift remaining data up."""
+        response = requests.get(self.api_endpoint)
+        data = response.json()
+        df = pd.DataFrame(data)
+        if column_name in df.columns:
+            df = df[df[column_name] != value_to_remove]
+            updated_data = df.to_dict(orient='records')
+            response = requests.put(self.api_endpoint, json={'data': updated_data})
+            return response.json()
+        else:
+            return f"Column '{column_name}' does not exist."
 
-        @self.socketio.on('update_data')
-        def handle_update_data(new_data):
-            self.data.update(new_data)
-            emit('data_response', self.data, broadcast=True)
-
-"""
-if __name__ == '__main__':
-    store = DataStore()
-    store.socketio.run(store.app, debug=True)
-"""
+data = dataStore()
 
 st.title("Mohji's Shop")
 st.write(
-    "Curtis came up with the name"
+    data.get_data('team1')
 )
