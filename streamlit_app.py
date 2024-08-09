@@ -37,7 +37,7 @@ class dataStore:
         data = response.json()
         df = pd.DataFrame(data)
 
-        if df: return df; return None
+        return df
 
     def addData(self, columnName, val):
         df = getData()
@@ -77,6 +77,10 @@ data.removeData('team1', '2')
 
 time.sleep(2)
 # round 3:
-st.write(
-    data.getData().columns
-)
+
+try:
+    st.write(
+        data.getData().columns
+    )
+except:
+    st.write('failed to collect data :/')
