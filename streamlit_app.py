@@ -40,7 +40,7 @@ class dataStore:
         return df
 
     def addData(self, columnName, val):
-        df = self.getData()
+        df = getData()
         if columnName in df.columns:
             new_row = {col: '' for col in df.columns}
             new_row[columnName] = val
@@ -49,11 +49,38 @@ class dataStore:
         
         else: return f"Column '{columnName}' does not exist."
 
+    def removeData(self, columnName, val):
+        df = getData()
+        if columnName in df.columns:
+            df = df[df[columnName] != val]
+            updated_data = df.to_dict(orient='records')
+            response = requests.put(self.apiEndpoint, json={'data': updated_data})
+            return response.json()
+        
+        else: return f"Column '{columnName}' does not exist."
+
 data = dataStore()
-data.addData('team1', 'one')
-data.addData('team1', 'two')
 
 st.title("Mohji's Shop")
 st.write(
     data.getData().columns
 )
+
+# round 1:
+data.addData('team1', '1')
+data.addData('team1', '2')
+data.addData('team1', '3')
+
+time.sleep(10)
+# round 2:
+data.removeData('team1', '2')
+
+time.sleep(2)
+# round 3:
+
+try:
+    st.write(
+        data.getData().columns
+    )
+except:
+    st.write('failed to collect data :/')
