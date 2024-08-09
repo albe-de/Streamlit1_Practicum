@@ -41,9 +41,10 @@ class dataStore:
         result = {}
 
         for d in data:
-            for key, value in d.items():
+            # for key, value in d.items():
+            for key in range(len(d)):
                 if key not in result: result[key] = []
-                result[key].append(value)
+                result[key].append(d[key])
                 
         return result
 
