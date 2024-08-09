@@ -39,21 +39,21 @@ class dataStore:
 
         return data
 
-    def setData(self, newData):
-        if not isinstance(newData, dict):
-            raise ValueError("newData must be a dictionary in the format {'team': ['item1', 'item2']}")
+    def setData(self, new_data):
+        if not isinstance(new_data, dict):
+            raise ValueError("new_data must be a dictionary in the format {'team': ['item1', 'item2']}")
         
-        response = requests.put(self.apiEndpoint, json=newData)
-        print(response.status_code)  # Log status code
-        print(response.json())       # Log response JSON
+        headers = {'Content-Type': 'application/json'}
+        response = requests.put(self.apiEndpoint, json=new_data, headers=headers)
+        print("Status Code:", response.status_code)  # Log status code
+        print("Response Text:", response.text)       # Log raw response text
+        
+        try:
+            response_json = response.json()  # Try to parse JSON
+            print("Response JSON:", response_json)
+        except ValueError as e:
+            print("Failed to decode JSON. Response might not be JSON format or is empty:", e)
 
-    def addData(self, team, item):
-        data = self.getData()
-        if team in data:  data[team].append(item)
-        else: data[team] = [item]
-
-        response = requests.put(self.apiEndpoint, json=data)
-        # return response.json()
 
 ds = dataStore()
 new_data = {
