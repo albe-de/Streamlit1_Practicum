@@ -40,7 +40,7 @@ class dataStore:
         return df
 
     def addData(self, columnName, val):
-        df = getData()
+        df = self.getData()
         if columnName in df.columns:
             new_row = {col: '' for col in df.columns}
             new_row[columnName] = val
@@ -50,7 +50,7 @@ class dataStore:
         else: return f"Column '{columnName}' does not exist."
 
     def removeData(self, columnName, val):
-        df = getData()
+        df = self.getData()
         if columnName in df.columns:
             df = df[df[columnName] != val]
             updated_data = df.to_dict(orient='records')
