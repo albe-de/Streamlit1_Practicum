@@ -63,4 +63,4 @@ new_data = {
 response = ds.setData(new_data)
 
 st.title("Mohji's Shop")
-st.write(f'{response}')
+# st.write(f'{response}')
