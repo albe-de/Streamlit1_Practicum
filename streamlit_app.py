@@ -32,24 +32,23 @@ class dataStore:
         self.apiEndpoint = 'https://sheetdb.io/api/v1/tg7nxf1004y8w'
         self.googleSheet = 'https://docs.google.com/spreadsheets/d/1MtMZush8dUvOZ6LxDmX_e8nZ7zY025Chnsn2OkX43MU/edit#gid=0'
 
-    # returns raw, unfiltered data
-    def getData(self, format=False):
+    def getData(self):
         response = requests.get(self.apiEndpoint)
         data = response.json()
+        return self.formatData(data)
 
-        if not format: return self.formatData(data)
+    def formatData(self, data):
         result = {}
-
         for d in data:
             for key, value in d.items():
                 if key not in result: result[key] = []
                 result[key].append(value)
-                
+        
         return result
 
 
 ds = dataStore()
-data = ds.getData(True)
+data = ds.getData()
 
 st.title("Mohji's Shop")
 
