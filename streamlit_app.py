@@ -63,7 +63,7 @@ data = dataStore()
 
 st.title("Mohji's Shop")
 st.write(
-    data.getData.columns
+    data.getData().columns
 )
 
 # round 1:
@@ -78,5 +78,5 @@ data.removeData('team1', '2')
 time.sleep(2)
 # round 3:
 st.write(
-    data.getData.columns
+    data.getData().columns
 )
