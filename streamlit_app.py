@@ -61,5 +61,5 @@ data = ds.getData()
 st.title("Mohji's Shop")
 
 if st.button('Click Me'):
-    st.setData({'team1': ['fart']})
+    st.setData(data)
     st.write(data)
