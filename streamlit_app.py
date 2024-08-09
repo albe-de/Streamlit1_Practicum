@@ -32,7 +32,7 @@ class dataStore:
         self.apiEndpoint = 'https://sheetdb.io/api/v1/tg7nxf1004y8w'
         self.googleSheet = 'https://docs.google.com/spreadsheets/d/1MtMZush8dUvOZ6LxDmX_e8nZ7zY025Chnsn2OkX43MU/edit#gid=0'
 
-    def getData(self, column):
+    def getData(self):
         response = requests.get(self.apiEndpoint)
         data = response.json()
         df = pd.DataFrame(data)
@@ -63,7 +63,7 @@ data = dataStore()
 
 st.title("Mohji's Shop")
 st.write(
-    data.get_data('team1')
+    data.getData('team1')
 )
 
 # round 1:
