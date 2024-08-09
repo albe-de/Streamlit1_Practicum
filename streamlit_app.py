@@ -32,7 +32,7 @@ class dataStore:
         self.apiEndpoint = 'https://sheetdb.io/api/v1/tg7nxf1004y8w'
         self.googleSheet = 'https://docs.google.com/spreadsheets/d/1MtMZush8dUvOZ6LxDmX_e8nZ7zY025Chnsn2OkX43MU/edit#gid=0'
 
-    def getData(self):
+    def getData(self, column):
         response = requests.get(self.apiEndpoint)
         data = response.json()
         df = pd.DataFrame(data)
@@ -41,46 +41,32 @@ class dataStore:
 
     def addData(self, columnName, val):
         df = self.getData()
-        if columnName in df.columns:
+        if df and columnName in df.columns:
             new_row = {col: '' for col in df.columns}
             new_row[columnName] = val
             response = requests.post(self.apiEndpoint, json={'data': new_row})
             return response.json()
         
-        else: return f"Column '{columnName}' does not exist."
+        else: return f"Critical ErrorL Column '{columnName}' does not exist."
 
     def removeData(self, columnName, val):
         df = self.getData()
-        if columnName in df.columns:
+        if df and columnName in df.columns:
             df = df[df[columnName] != val]
             updated_data = df.to_dict(orient='records')
             response = requests.put(self.apiEndpoint, json={'data': updated_data})
             return response.json()
         
-        else: return f"Column '{columnName}' does not exist."
+        else: return f"Critical Error: Column '{columnName}' does not exist."
 
 data = dataStore()
 
 st.title("Mohji's Shop")
 st.write(
-    data.getData().columns
+    data.get_data('team1')
 )
 
 # round 1:
 data.addData('team1', '1')
 data.addData('team1', '2')
 data.addData('team1', '3')
-
-time.sleep(10)
-# round 2:
-data.removeData('team1', '2')
-
-time.sleep(2)
-# round 3:
-
-try:
-    st.write(
-        data.getData().columns
-    )
-except:
-    st.write('failed to collect data :/')
