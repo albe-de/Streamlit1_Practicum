@@ -37,7 +37,7 @@ class dataStore:
         response = requests.get(self.apiEndpoint)
         data = response.json()
 
-        return data
+        return response
 
     def setData(self, new_data):
         if not isinstance(new_data, dict):
