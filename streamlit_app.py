@@ -44,7 +44,7 @@ class dataStore:
             raise ValueError("new_data must be a dictionary in the format {'team': ['item1', 'item2']}")
         
         response = requests.put(self.apiEndpoint, json=new_data)
-        return response.json()
+        # return response.json()
 
     def addData(self, team, item):
         data = self.getData()
@@ -52,7 +52,7 @@ class dataStore:
         else: data[team] = [item]
 
         response = requests.put(self.apiEndpoint, json=data)
-        return response.json()
+        # return response.json()
 
 ds = dataStore()
 new_data = {
