@@ -37,17 +37,14 @@ class dataStore:
         data = response.json()
         return self.formatData(data)
 
-    def formatData(self, data):
-        # [row: {column: value}, ect]
-        qualities = len(data[0])
-        newSet = [ [] for _ in range(qualities) ]
-        """ [ [], [], [] ] """
-
-        for rowIndex in range(len(data)):
-            for dataIndex in range(qualities):
-                newSet[dataIndex].insert(-1, data[rowIndex][dataIndex])
-
-        return newSet
+    def formatData(data):
+        result = {}
+        for d in data:
+            for key, value in d.items():
+                if key not in result: result[key] = []
+                result[key].append(value)
+        
+        return result
 
 
 ds = dataStore()
