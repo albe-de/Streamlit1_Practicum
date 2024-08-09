@@ -65,22 +65,3 @@ st.title("Mohji's Shop")
 st.write(
     data.getData().columns
 )
-
-# round 1:
-data.addData('team1', '1')
-data.addData('team1', '2')
-data.addData('team1', '3')
-
-time.sleep(10)
-# round 2:
-data.removeData('team1', '2')
-
-time.sleep(2)
-# round 3:
-
-try:
-    st.write(
-        data.getData().columns
-    )
-except:
-    st.write('failed to collect data :/')
