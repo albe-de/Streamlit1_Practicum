@@ -35,23 +35,19 @@ class dataStore:
     def getData(self):
         response = requests.get(self.apiEndpoint)
         data = response.json()
+        return self.formatData(data)
 
-        return data
+    def formatData(self, data):
+        # [row: {column: value}, ect]
+        qualities = len(data[0])
+        newSet = [[] * qualities]
+        """ [ [], [], [] ] """
 
-    def setData(self, new_data):
-        if not isinstance(new_data, dict):
-            raise ValueError("new_data must be a dictionary in the format {'team': ['item1', 'item2']}")
-        
-        headers = {'Content-Type': 'application/json'}
-        response = requests.put(self.apiEndpoint, json=new_data, headers=headers)
-        print("Status Code:", response.status_code)  # Log status code
-        print("Response Text:", response.text)       # Log raw response text
-        
-        try:
-            response_json = response.json()  # Try to parse JSON
-            print("Response JSON:", response_json)
-        except ValueError as e:
-            print("Failed to decode JSON. Response might not be JSON format or is empty:", e)
+        for rowIndex in range(len(data)):
+            for dataIndex in range(qualities):
+                newSet[i].append(data[rowIndex][dataIndex])
+
+        return newSet
 
 
 ds = dataStore()
