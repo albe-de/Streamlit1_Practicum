@@ -56,13 +56,8 @@ class dataStore:
 
 
 ds = dataStore()
-new_data = {
-    'team1': ['item1', 'item2', 'item4'],
-    'team2': ['item3', 'item5'],
-    'team3': ['item6']
-}
-if st.button('Click Me'):
-    ds.setData(new_data)
+data = ds.getData
 
 st.title("Mohji's Shop")
-# st.write(f'{response}')
+if st.button('Click Me'):
+    st.write(data)
