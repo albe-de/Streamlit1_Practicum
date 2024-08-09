@@ -37,7 +37,7 @@ class dataStore:
         data = response.json()
         return self.formatData(data)
 
-    def formatData(data):
+    def formatData(self, data):
         result = {}
         for d in data:
             for key, value in d.items():
