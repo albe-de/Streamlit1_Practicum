@@ -60,7 +60,8 @@ new_data = {
     'team2': ['item3', 'item5'],
     'team3': ['item6']
 }
-response = ds.setData(new_data)
+if st.button('Click Me'):
+    ds.setData(new_data)
 
 st.title("Mohji's Shop")
 # st.write(f'{response}')
