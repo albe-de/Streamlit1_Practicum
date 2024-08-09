@@ -6,7 +6,6 @@ import time
 import csv
 
 # third party meathods for exess site usage
-@st.cache_data(show_spinner=False)
 class exessMeathods():
     def __init__(self): pass
     def dumpCSV(self, file='https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'):
@@ -37,7 +36,7 @@ class dataStore:
         response = requests.get(self.apiEndpoint)
         data = response.json()
 
-        return response
+        return data
 
     def setData(self, new_data):
         if not isinstance(new_data, dict):
@@ -61,5 +60,4 @@ data = ds.getData()
 st.title("Mohji's Shop")
 
 if st.button('Click Me'):
-    # st.setData(data)
     st.write(data)
