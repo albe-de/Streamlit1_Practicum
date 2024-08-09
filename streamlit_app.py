@@ -6,6 +6,7 @@ import time
 import csv
 
 # third party meathods for exess site usage
+@st.cache_data(show_spinner=False)
 class exessMeathods():
     def __init__(self): pass
     def dumpCSV(self, file='https://github.com/albe-de/Streamlit1_Practicum/blob/main/dev%20assets/Sanford%2BStuff%2BCatalogue%2B-%2BSheet1.csv'):
@@ -38,13 +39,13 @@ class dataStore:
 
         return data
 
-    def setData(self, new_data):
-        # {'team1': ['item1', 'item2'], 'team2': ['item3'], ect}
-        if not isinstance(new_data, dict):
-            raise ValueError("new_data must be a dictionary in the format {'team': ['item1', 'item2']}")
+    def setData(self, newData):
+        if not isinstance(newData, dict):
+            raise ValueError("newData must be a dictionary in the format {'team': ['item1', 'item2']}")
         
-        response = requests.put(self.apiEndpoint, json=new_data)
-        # return response.json()
+        response = requests.put(self.apiEndpoint, json=newData)
+        print(response.status_code)  # Log status code
+        print(response.json())       # Log response JSON
 
     def addData(self, team, item):
         data = self.getData()
