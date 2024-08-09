@@ -35,37 +35,32 @@ class dataStore:
     def getData(self):
         response = requests.get(self.apiEndpoint)
         data = response.json()
-        df = pd.DataFrame(data)
 
-        return df
+        return data
 
-    def addData(self, columnName, val):
-        df = self.getData()
-        if columnName in df.columns:
-            new_row = {col: '' for col in df.columns}
-            new_row[columnName] = val
-            response = requests.post(self.apiEndpoint, json={'data': new_row})
-            return response.json()
+    def setData(self, new_data):
+        # {'team1': ['item1', 'item2'], 'team2': ['item3'], ect}
+        if not isinstance(new_data, dict):
+            raise ValueError("new_data must be a dictionary in the format {'team': ['item1', 'item2']}")
         
-        else: return f"Critical ErrorL Column '{columnName}' does not exist."
+        response = requests.put(self.apiEndpoint, json=new_data)
+        return response.json()
 
-    def removeData(self, columnName, val):
-        df = self.getData()
-        if columnName in df.columns:
-            df = df[df[columnName] != val]
-            updated_data = df.to_dict(orient='records')
-            response = requests.put(self.apiEndpoint, json={'data': updated_data})
-            return response.json()
-        
-        else: return f"Critical Error: Column '{columnName}' does not exist."
+    def addData(self, team, item):
+        data = self.getData()
+        if team in data:  data[team].append(item)
+        else: data[team] = [item]
 
-data = dataStore()
-# round 1:
-data.addData('team1', '1')
-data.addData('team1', '2')
-data.addData('team1', '3')
+        response = requests.put(self.apiEndpoint, json=data)
+        return response.json()
+
+ds = dataStore()
+new_data = {
+    'team1': ['item1', 'item2', 'item4'],
+    'team2': ['item3', 'item5'],
+    'team3': ['item6']
+}
+response = ds.setData(new_data)
 
 st.title("Mohji's Shop")
-st.write(
-    data.getData()
-)
+st.write(f'{response}')
