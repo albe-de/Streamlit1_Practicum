@@ -45,7 +45,7 @@ class dataStore:
             newRow = {col: '' for col in df.columns}
             newRow[columnName] = val
             df = df.append(newRow, ignore_index=True)
-            updatedData = df.to_dict(orient='records')
+            # updatedData = df.to_dict(orient='records')
             response = requests.put(self.apiEndpoint, json={'data': updatedData})
 
             return response.json()
