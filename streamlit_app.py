@@ -36,10 +36,8 @@ class dataStore:
         response = requests.get(self.api_endpoint)
         data = response.json()
         df = pd.DataFrame(data)
-        if column_name in df.columns:
-            return df[column_name].tolist()
-        else:
-            return f"Column '{column_name}' does not exist."
+        
+        return df
 
     def add_data(self, column_name, new_value):
         """Add data to the end of the specified column."""
