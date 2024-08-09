@@ -45,7 +45,7 @@ class dataStore:
 
         for rowIndex in range(len(data)):
             for dataIndex in range(qualities):
-                newSet[i].append(data[rowIndex][dataIndex])
+                newSet[i].insert(-1, data[rowIndex][dataIndex])
 
         return newSet
 
