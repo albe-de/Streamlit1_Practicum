@@ -37,7 +37,7 @@ class dataStore:
         response = requests.get(self.apiEndpoint)
         data = response.json()
 
-        if not format: return self.formatData(data)
+        if format == False: return self.formatData(datTruea)
         result = {}
 
         for d in data:
