@@ -60,13 +60,12 @@ class dataStore:
         else: return f"Critical Error: Column '{columnName}' does not exist."
 
 data = dataStore()
+# round 1:
+data.addData('team1', '1')
+data.addData('team1', '2')
+data.addData('team1', '3')
 
 st.title("Mohji's Shop")
 st.write(
     data.getData()
 )
-
-# round 1:
-data.addData('team1', '1')
-data.addData('team1', '2')
-data.addData('team1', '3')
