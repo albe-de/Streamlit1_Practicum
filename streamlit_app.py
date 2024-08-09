@@ -40,7 +40,7 @@ class dataStore:
     def formatData(self, data):
         # [row: {column: value}, ect]
         qualities = len(data[0])
-        newSet = [[] * qualities]
+        newSet = [ [] for _ in range(qualities) ]
         """ [ [], [], [] ] """
 
         for rowIndex in range(len(data)):
